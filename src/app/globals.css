@@ -90,3 +90,109 @@ body::before {
 .retro-button:hover .arrow {
   opacity: 1;
 }
+/* --- Assignment 3: auth, forms, profile --- */
+
+.page-center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.retro-label {
+  display: block;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.retro-input {
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 1rem;
+}
+
+.retro-input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent-dim);
+}
+
+.retro-input:disabled {
+  color: var(--text-dim);
+}
+
+.form-error {
+  color: var(--accent-secondary);
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.form-success {
+  color: var(--accent);
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.retro-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+  border-bottom: 2px solid var(--border);
+  position: relative;
+  z-index: 2;
+}
+
+.retro-nav a,
+.retro-nav button,
+.link-button {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.retro-nav a:hover,
+.retro-nav button:hover,
+.link-button:hover {
+  color: var(--accent);
+}
+
+.avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 8px;
+  border: 2px solid var(--accent-dim);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatar-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Press Start 2P", monospace;
+  color: var(--text-dim);
+  border-color: var(--border);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
