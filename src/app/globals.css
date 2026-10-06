@@ -196,3 +196,421 @@ body::before {
   overflow: hidden;
   clip-path: inset(50%);
 }
+
+
+/* --- Assignment 4: generate and rate --- */
+
+/* Show the whole photo: scale it down to fit, never crop it. */
+.photo-preview {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  background: #000;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.caption-list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.caption-list li {
+  border-left: 3px solid var(--accent-dim);
+  padding: 0.25rem 0 0.25rem 0.9rem;
+  line-height: 1.5;
+}
+
+/* Rate page: one full-screen meme at a time */
+
+.meme-page {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.meme-page .page-center {
+  flex: 1;
+  min-height: 0;
+}
+
+.meme-feed {
+  flex: 1;
+  min-height: 0;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  position: relative;
+  z-index: 2;
+  outline: none;
+}
+
+.meme-feed::-webkit-scrollbar {
+  display: none;
+}
+
+.meme-slide {
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.meme-card {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.meme-frame {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+/* The whole photo fits inside the frame; any spare room stays black. */
+.meme-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.meme-count {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.55rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* Classic meme lettering: white capitals with a thick black outline, above the photo. */
+.meme-caption {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
+  font-size: clamp(1.15rem, 4.5vw, 1.8rem);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  -webkit-text-stroke: 5px #000;
+  paint-order: stroke fill;
+}
+
+/* Thumbs sit under the photo, with the score between them. */
+.vote-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.vote-button {
+  width: 96px;
+  height: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 2.75rem;
+  line-height: 1;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.vote-label {
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.45rem;
+  color: var(--text-dim);
+}
+
+.vote-button:hover,
+.vote-button:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.vote-button:active {
+  transform: scale(0.92);
+}
+
+.vote-button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 16px var(--accent);
+}
+
+.vote-down:hover,
+.vote-down:focus-visible {
+  border-color: var(--accent-secondary);
+}
+
+.vote-down[aria-pressed="true"] {
+  background: var(--accent-secondary);
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 16px var(--accent-secondary);
+}
+
+.vote-button[aria-pressed="true"] .vote-label {
+  color: var(--bg);
+}
+
+.vote-score {
+  min-width: 2.5rem;
+  text-align: center;
+  font-family: "Press Start 2P", monospace;
+  font-size: 1.1rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.meme-hint {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1.25rem;
+  margin: 0;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.55rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.meme-hint-next {
+  color: var(--accent);
+}
+
+.meme-hint a {
+  color: var(--accent);
+}
+
+.meme-hint-arrow {
+  display: inline-block;
+  animation: nudge-up 1.2s ease-in-out infinite;
+}
+
+@keyframes nudge-up {
+  0%, 100% { transform: translateY(2px); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meme-hint-arrow {
+    animation: none;
+  }
+}
+
+/* Generate page: managing your own photos */
+
+.retro-button:disabled,
+.retro-button[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.photo-card {
+  padding: 1.5rem;
+}
+
+.photo-card .photo-preview {
+  margin-top: 1rem;
+}
+
+.photo-note {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 1rem 0 0;
+}
+
+.caption-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.caption-rows li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-left: 3px solid var(--accent-dim);
+  padding-left: 0.9rem;
+}
+
+.caption-rows p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.small-button {
+  flex-shrink: 0;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  background: transparent;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.small-button:hover,
+.small-button:focus-visible {
+  color: var(--text);
+  border-color: var(--text-dim);
+  outline: none;
+}
+
+/* Delete buttons: a pink box that stands out from the caption text. */
+.small-button.danger {
+  color: var(--accent-secondary);
+  background: rgba(255, 62, 201, 0.12);
+  border-color: var(--accent-secondary);
+}
+
+.small-button.danger:hover,
+.small-button.danger:focus-visible {
+  color: var(--bg);
+  background: var(--accent-secondary);
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 12px var(--accent-secondary);
+}
+
+.small-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Home page */
+
+.home {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+}
+
+/* The app name, in the same glowing arcade heading as the rest of the site. */
+.home-title {
+  font-size: clamp(1.4rem, 6vw, 2rem);
+  line-height: 1.4;
+  margin: 1.5rem 0 1rem;
+}
+
+.home-tagline {
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin: 0 auto 2rem;
+  max-width: 440px;
+}
+
+.home-steps {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.home-steps li {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 3px 3px 0px var(--border);
+  padding: 1rem 0.5rem;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.home-steps li span {
+  display: block;
+  font-size: 1.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.home-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (max-width: 420px) {
+  .home-steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Home page background: laughing emojis falling behind the card */
+
+.emoji-rain {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.emoji-rain span {
+  position: absolute;
+  top: -12vh;
+  opacity: 0.75;
+  animation: emoji-fall linear infinite;
+  will-change: transform;
+}
+
+@keyframes emoji-fall {
+  from { transform: translateY(0) rotate(-15deg); }
+  to { transform: translateY(125vh) rotate(15deg); }
+}
+
+/* People who ask their device for less motion get a still page. */
+@media (prefers-reduced-motion: reduce) {
+  .emoji-rain {
+    display: none;
+  }
+}
+

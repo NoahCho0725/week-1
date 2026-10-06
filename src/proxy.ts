@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 // Routes that require a logged-in user.
-const PROTECTED = ["/projects", "/profile", "/welcome"];
+const PROTECTED = ["/projects", "/profile", "/welcome", "/generate", "/rate"];
 
 // Next.js 16 calls this file "proxy" (it used to be "middleware").
 // It runs before every matched request to keep the session fresh
